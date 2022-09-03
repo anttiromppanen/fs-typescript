@@ -6,18 +6,20 @@ interface Results {
   ratingDescription: string,
   target: number,
   average: number
-};
+}
 
-interface Ratings { rating: number, ratingDescription: string };
+interface Ratings { rating: number, ratingDescription: string }
+
+interface WebExercises { daily_exercises: Array<number>, target: number }
 
 const calculateRatings = (average: number): Ratings => {
   if (average < 2) return { rating: 1, ratingDescription: 'horrible' };
   if (average < 4) return { rating: 2, ratingDescription: 'decent' };
 
   return { rating: 3, ratingDescription: 'not bad' };
-}
+};
 
-interface ExerciseInputs { target: number, exerciseHours: Array<number> };
+interface ExerciseInputs { target: number, exerciseHours: Array<number> }
 
 const parseArguments = (args: Array<string>): ExerciseInputs => {
   if (args.length < 3) throw new Error('Not enough arguments');
@@ -27,9 +29,9 @@ const parseArguments = (args: Array<string>): ExerciseInputs => {
     if (isNaN(number)) throw new Error('Provided value is not a number');
 
     return number;
-  })
+  });
 
-  return { target: Number(args[2]), exerciseHours }
+  return { target: Number(args[2]), exerciseHours };
 };
 
 const calculateExercises = (): Results => {
@@ -54,4 +56,27 @@ const calculateExercises = (): Results => {
   };
 };
 
-console.log(calculateExercises());
+export const calculateWebExercises = (exercises: WebExercises): Results => {
+  const target = exercises.target;
+  const exerciseHours = exercises.daily_exercises;
+  const periodLength = exerciseHours.length;
+  const trainingDays = exerciseHours.filter((x) => x > 0).length;
+  const average = exerciseHours.length > 0
+    ? exerciseHours.reduce((prev, curr) => prev + curr) / periodLength
+    : 0;
+  const exerciseRating = calculateRatings(average);
+
+  return {
+    periodLength,
+    trainingDays,
+    success: average >= target,
+    rating: exerciseRating.rating,
+    ratingDescription: exerciseRating.ratingDescription,
+    target,
+    average
+  };
+};
+
+if (process.argv[1] !== 'index.ts') {
+  console.log(calculateExercises());
+}

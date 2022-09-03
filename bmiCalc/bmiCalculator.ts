@@ -1,7 +1,7 @@
 interface BmiValues {
   height: number,
   weight: number
-};
+}
 
 const parseArguments = (args: Array<string>): BmiValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
@@ -11,7 +11,7 @@ const parseArguments = (args: Array<string>): BmiValues => {
     return {
       height: Number(args[2]),
       weight: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
@@ -44,7 +44,7 @@ export const calculateBmi = (webWeight?: number, webHeight?: number, web?: boole
       return 'Obese (Class II)';
     default:
       return 'Obese (Class III)';
-  };
+  }
 };
 
 if (process.argv[1] !== 'index.ts') {
