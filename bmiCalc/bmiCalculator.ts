@@ -1,5 +1,3 @@
-export {};
-
 interface BmiValues {
   height: number,
   weight: number
@@ -19,12 +17,18 @@ const parseArguments = (args: Array<string>): BmiValues => {
   }
 };
 
-const calculateBmi = (): string => {
-  const parsedValues = parseArguments(process.argv);
-  const { height } = parsedValues;
-  const { weight } = parsedValues;
-  const bmi: number = weight / ((height / 100) ** 2);
+export const calculateBmi = (webWeight?: number, webHeight?: number, web?: boolean): string => {
+    let weight = webWeight || 0;
+    let height = webHeight || 0;
+    
+    if (!web) {
+      const parsedValues = parseArguments(process.argv);
+      height = parsedValues.height;
+      weight = parsedValues.height;
+    }
   
+  const bmi = weight / ((height / 100) ** 2);
+
   switch(true) {
     case bmi < 16:
       return 'Underweight (Severe thinness)';
@@ -43,4 +47,6 @@ const calculateBmi = (): string => {
   };
 };
 
-console.log(calculateBmi());
+if (process.argv[1] !== 'index.ts') {
+  console.log(calculateBmi());
+}
