@@ -5,7 +5,7 @@ const Total = ({ courses }: { courses: Course[] }): JSX.Element => {
 
   return (
     <div>
-      <p>Number of exercises {exerciseCount}</p>
+      <h4>Number of exercises {exerciseCount}</h4>
     </div>
   )
 }
